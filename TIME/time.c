@@ -5,34 +5,34 @@
 
 void MX_TIM3_Init(uint16_t Period,uint16_t Prescaler,uint8_t Preemption, uint8_t Sub)
 {
-//------------------1.TIM3 Ê±ÖÓÊ¹ÄÜ------------------------
+//------------------1.TIM3 æ—¶é’Ÿä½¿èƒ½------------------------
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
 //------------------2.TIM3 Init----------------------------
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStruct;
 
-  TIM_TimeBaseInitStruct.TIM_Period 						= Period;							//×Ô¶¯ÖØ×°ÔØÖµ
-  TIM_TimeBaseInitStruct.TIM_Prescaler 					= Prescaler;					//Ô¤·ÖÆµÖµ
-  TIM_TimeBaseInitStruct.TIM_ClockDivision 			= TIM_CKD_DIV1;				//Ê±ÖÓËõË®±¶Êı
-  TIM_TimeBaseInitStruct.TIM_CounterMode			 	= TIM_CounterMode_Up;	//ÏòÉÏ¼ÆÊı
-  TIM_TimeBaseInitStruct.TIM_RepetitionCounter 	= 0;									//Ã¿¸ôN´Î¸üĞÂ²úÉúÒ»´ÎÖĞ¶Ï
+  TIM_TimeBaseInitStruct.TIM_Period 						= Period;							//è‡ªåŠ¨é‡è£…è½½å€¼
+  TIM_TimeBaseInitStruct.TIM_Prescaler 					= Prescaler;					//é¢„åˆ†é¢‘å€¼
+  TIM_TimeBaseInitStruct.TIM_ClockDivision 			= TIM_CKD_DIV1;				//æ—¶é’Ÿç¼©æ°´å€æ•°
+  TIM_TimeBaseInitStruct.TIM_CounterMode			 	= TIM_CounterMode_Up;	//å‘ä¸Šè®¡æ•°
+  TIM_TimeBaseInitStruct.TIM_RepetitionCounter 	= 0;									//æ¯éš”Næ¬¡æ›´æ–°äº§ç”Ÿä¸€æ¬¡ä¸­æ–­
 	
 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseInitStruct);
-//------------------3.TIM IT Config(ÔÚÊ²Ã´Ê±ºò²úÉúÖĞ¶Ï)----------------------------
+//------------------3.TIM IT Config(åœ¨ä»€ä¹ˆæ—¶å€™äº§ç”Ÿä¸­æ–­)----------------------------
 	
-	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);//ÅäÖÃTIM¸üĞÂÖĞ¶Ï
+	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);//é…ç½®TIMæ›´æ–°ä¸­æ–­
 	
 //------------------4.NVIC Init----------------------------
 	NVIC_InitTypeDef NVIC_InitStruct;
 	
-	NVIC_InitStruct.NVIC_IRQChannel										= TIM3_IRQn;		//Ñ¡ÔñÖĞ¶Ï0Í¨µÀ
-	NVIC_InitStruct.NVIC_IRQChannelCmd								= ENABLE;				//Ê¹ÄÜÖĞ¶Ï
-	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = Preemption;		//ÇÀÕ¼ÓÅÏÈ¼¶
-	NVIC_InitStruct.NVIC_IRQChannelSubPriority				= Sub;					//ÏìÓ¦ÓÅÏÈ¼¶
+	NVIC_InitStruct.NVIC_IRQChannel										= TIM3_IRQn;		//é€‰æ‹©ä¸­æ–­0é€šé“
+	NVIC_InitStruct.NVIC_IRQChannelCmd								= ENABLE;				//ä½¿èƒ½ä¸­æ–­
+	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = Preemption;		//æŠ¢å ä¼˜å…ˆçº§
+	NVIC_InitStruct.NVIC_IRQChannelSubPriority				= Sub;					//å“åº”ä¼˜å…ˆçº§
 
 	NVIC_Init(&NVIC_InitStruct);
 	
-//------------------5.TIM3 Æô¶¯----------------------------
+//------------------5.TIM3 å¯åŠ¨----------------------------
 	TIM_Cmd(TIM3, ENABLE);
 	
 	
@@ -42,15 +42,16 @@ void MX_TIM3_Init(uint16_t Period,uint16_t Prescaler,uint8_t Preemption, uint8_t
 
 void TIM3_IRQHandler(void)
 {	
-		//1.ÅĞ¶ÏÊÇ·ñ²úÉú¸üĞÂÖĞ¶Ï
+		//1.åˆ¤æ–­æ˜¯å¦äº§ç”Ÿæ›´æ–°ä¸­æ–­
 	if( TIM_GetITStatus( TIM3,TIM_IT_Update) == SET)
 	{
-		//2.´¦ÀíÖĞ¶ÏÈÎÎñ
-		LED1 = !LED1;
+		//2.å¤„ç†ä¸­æ–­ä»»åŠ¡
+		LED1 = !LED1;	//å®šä¹‰åœ¨gpio.h
 	}
-		//3.Çå³ı¸üĞÂÖĞ¶Ï
+		//3.æ¸…é™¤æ›´æ–°ä¸­æ–­
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }
+
 
 
 
